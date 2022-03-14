@@ -36,6 +36,30 @@ class Database(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
+    internal fun getUserState(): UserState? {
+        return dbQuery.selectUserState().executeAsOneOrNull()
+    }
+
+    internal fun saveUserState(userId: String, token: String) {
+        dbQuery.transaction {
+            insertUserState(userId, token)
+        }
+    }
+
+    internal fun deleteUserState() {
+        dbQuery.transaction {
+            removeUserState()
+        }
+    }
+
+    private fun removeUserState() {
+        dbQuery.removeUserState()
+    }
+
+    private fun insertUserState(userId: String, token: String) {
+        dbQuery.insertUserState(userId, token)
+    }
+
     private fun removeDessert(dessertId: String) {
         dbQuery.removeDessertById(dessertId)
     }
